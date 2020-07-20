@@ -1,0 +1,3 @@
+include ':microservices:product-service'
+include ':microservices:phone-service'
+include ':spring-cloud:eureka-server'

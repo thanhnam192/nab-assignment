@@ -12,6 +12,8 @@ services:
   phone:
     build: microservices/phone-service
     mem_limit: 350m
+    depends_on:
+      - mysql
     environment:
       - SPRING_PROFILES_ACTIVE=docker
 
@@ -20,4 +22,20 @@ services:
     mem_limit: 350m
     ports:
       - "8761:8761"
+
+  mysql:
+    image: mysql:5.7
+    mem_limit: 350m
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=phone-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+    healthcheck:
+      test: "/usr/bin/mysql --user=user --password=pwd --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 5s
+      retries: 10
 

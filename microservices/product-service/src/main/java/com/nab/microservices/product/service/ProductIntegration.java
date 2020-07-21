@@ -28,6 +28,21 @@ public class ProductIntegration implements PhoneService {
     }
 
     @Override
+    public String buyPhoneCard(String phoneNumber) {
+        try {
+            String url = phoneServiceUrl + "/api/card/buy/" + phoneNumber;
+            LOG.debug("Create phone card order from URL: {}", url);
+
+            String message = restTemplate.postForObject(url, null,String.class);
+
+            return message;
+
+        } catch (HttpClientErrorException ex) {
+            throw handleHttpClientException(ex);
+        }
+    }
+
+    @Override
     public PhoneCardDto getPhoneCard(String orderId) {
         try {
             String url = phoneServiceUrl + "/api/card/" + orderId;

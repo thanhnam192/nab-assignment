@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: "The Best Video On The World"
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: dev
+
+Conditions:
+  IsProd: !Equals [!Ref EnvironmentName,'prod']
+
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 300
+    Handler: index.handler
+    Environment:
+      Variables:
+        PHONE_CARD_RESULT_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_phone_card_result"
+        PHONE_CARD_ORDER_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_phone_card_order"
+
+
+Resources:
+  GetPhoneCard:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist/get-phone-card/get-phone-card.zip
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_result"]]
+      Events:
+        PhoneCardOrderCome:
+          Type: SQS
+          Properties:
+            Queue:  !GetAtt PhoneCardOrderQueue.Arn
+            BatchSize: 1
+
+  PhoneCardResultQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_result"]]
+      VisibilityTimeout: 300
+
+  PhoneCardOrderQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_order"]]
+      VisibilityTimeout: 300

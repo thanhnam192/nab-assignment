@@ -2,12 +2,16 @@ package com.nab.microservices.product.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nab.microservices.product.dto.PhoneCardDto;
+import com.nab.microservices.product.dto.PhoneCardOrderDto;
 import com.nab.microservices.product.util.exceptions.HttpErrorInfo;
 import com.nab.microservices.product.util.exceptions.InvalidInputException;
 import com.nab.microservices.product.util.exceptions.NotFoundException;
 import com.nab.microservices.product.service.core.PhoneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -28,12 +32,16 @@ public class ProductIntegration implements PhoneService {
     }
 
     @Override
-    public String buyPhoneCard(String phoneNumber) {
+    public String buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto) {
         try {
-            String url = phoneServiceUrl + "/api/card/buy/" + phoneNumber;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<PhoneCardOrderDto> httpEntity = new HttpEntity<>(phoneCardOrderDto, headers);
+
+            String url = phoneServiceUrl + "/api/card/buy";
             LOG.debug("Create phone card order from URL: {}", url);
 
-            String message = restTemplate.postForObject(url, null,String.class);
+            String message = restTemplate.postForObject(url, httpEntity,String.class);
 
             return message;
 

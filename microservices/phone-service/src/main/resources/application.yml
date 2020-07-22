@@ -21,6 +21,11 @@ spring.datasource:
   password:
 
 spring.datasource.hikari.initializationFailTimeout: 60000
+
+application:
+  queue:
+    order: ${env.name}_phone_card_order
+    result: ${env.name}_phone_card_result
 ---
 spring.profiles: docker
 

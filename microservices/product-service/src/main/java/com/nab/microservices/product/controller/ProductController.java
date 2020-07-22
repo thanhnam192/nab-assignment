@@ -1,6 +1,7 @@
 package com.nab.microservices.product.controller;
 
 import com.nab.microservices.product.dto.PhoneCardDto;
+import com.nab.microservices.product.dto.PhoneCardOrderDto;
 import com.nab.microservices.product.service.ProductIntegration;
 import com.nab.microservices.product.service.ProductService;
 import org.slf4j.Logger;
@@ -28,8 +29,8 @@ public class ProductController implements ProductService {
     }
 
     @Override
-    public ResponseEntity<String> buyPhoneCard(String phoneNumber) {
-        String message = this.productIntegration.buyPhoneCard(phoneNumber);
+    public ResponseEntity<String> buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto) {
+        String message = this.productIntegration.buyPhoneCard(phoneCardOrderDto);
         return  ResponseEntity.ok().body(message);
     }
 

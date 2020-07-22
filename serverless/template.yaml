@@ -5,10 +5,7 @@ Description: "The Best Video On The World"
 Parameters:
   EnvironmentName:
     Type: String
-    Default: dev
-
-Conditions:
-  IsProd: !Equals [!Ref EnvironmentName,'prod']
+    Default: demo
 
 Globals:
   Function:
@@ -46,4 +43,13 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_order"]]
+      VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt PhoneCardOrderDeadQueue.Arn
+        maxReceiveCount: 5
+
+  PhoneCardOrderDeadQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_order_dead"]]
       VisibilityTimeout: 300

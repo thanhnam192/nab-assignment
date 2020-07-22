@@ -2,15 +2,20 @@ package com.nab.microservices.core.phone.controller;
 
 
 import com.nab.microservices.core.phone.dto.PhoneCardDto;
+import com.nab.microservices.core.phone.dto.PhoneCardOrderDto;
 import com.nab.microservices.core.phone.exceptions.InvalidInputException;
 import com.nab.microservices.core.phone.logic.PhoneCardLogic;
 import com.nab.microservices.core.phone.service.PhoneCardService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
@@ -18,16 +23,21 @@ public class PhoneController implements PhoneCardService {
     private static final Logger LOG = LoggerFactory.getLogger(PhoneController.class);
     private PhoneCardLogic phoneCardLogic;
 
+
     public PhoneController(PhoneCardLogic phoneCardLogic){
         this.phoneCardLogic = phoneCardLogic;
     }
 
     @Override
-    public ResponseEntity<String> buyPhoneCard(String phoneNumber) {
-        if( StringUtils.isBlank(phoneNumber) ){
-            throw new InvalidInputException("Phone number is required");
+    public ResponseEntity<String> buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto) {
+
+        try {
+            this.phoneCardLogic.createPhoneCardOrder(phoneCardOrderDto);
+        } catch (IOException e) {
+           LOG.error(e.getMessage());
+            return new ResponseEntity<>("Created phone card order failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        this.phoneCardLogic.createPhoneCardOrder(phoneNumber);
+
         return ResponseEntity.ok().body("Create phone card order successfully. You will receive phone card in less than 120 seconds");
     }
 

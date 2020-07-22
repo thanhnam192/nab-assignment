@@ -4,6 +4,7 @@ package com.nab.microservices.core.phone.persistence;
 import com.nab.microservices.core.phone.enums.PhoneCardOrderStatus;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
@@ -16,7 +17,7 @@ public class PhoneCard {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "order_id")
+    @Column(name = "order_id", unique = true)
     private String orderId;
 
     @Column(name = "card_number")
@@ -25,6 +26,12 @@ public class PhoneCard {
     @Enumerated(EnumType.STRING)
     private PhoneCardOrderStatus status;
     private Timestamp timestamp;
+
+    @Column(name = "mobile_network", nullable = false)
+    private String mobileNetwork;
+
+    @Column(nullable = false)
+    private BigDecimal price;
 
     public Integer getId() {
         return id;
@@ -72,5 +79,21 @@ public class PhoneCard {
 
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public String getMobileNetwork() {
+        return mobileNetwork;
+    }
+
+    public void setMobileNetwork(String mobileNetwork) {
+        this.mobileNetwork = mobileNetwork;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

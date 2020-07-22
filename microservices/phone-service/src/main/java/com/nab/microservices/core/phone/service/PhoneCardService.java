@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 public interface PhoneCardService {
     @PostMapping("/card/buy")
-    ResponseEntity<String> buyPhoneCard(@Valid  @RequestBody PhoneCardOrderDto phoneCardOrderDto);
+    ResponseEntity<PhoneCardDto> buyPhoneCard(@Valid  @RequestBody PhoneCardOrderDto phoneCardOrderDto);
 
     @GetMapping("/card/{orderId}")
     ResponseEntity<PhoneCardDto> getPhoneCard(@PathVariable String orderId);

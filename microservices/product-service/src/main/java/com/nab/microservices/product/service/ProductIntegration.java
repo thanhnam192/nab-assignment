@@ -32,7 +32,7 @@ public class ProductIntegration implements PhoneService {
     }
 
     @Override
-    public String buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto) {
+    public PhoneCardDto buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -41,9 +41,9 @@ public class ProductIntegration implements PhoneService {
             String url = phoneServiceUrl + "/api/card/buy";
             LOG.debug("Create phone card order from URL: {}", url);
 
-            String message = restTemplate.postForObject(url, httpEntity,String.class);
+            PhoneCardDto phoneCardDto = restTemplate.postForObject(url, httpEntity,PhoneCardDto.class);
 
-            return message;
+            return phoneCardDto;
 
         } catch (HttpClientErrorException ex) {
             throw handleHttpClientException(ex);
@@ -57,8 +57,6 @@ public class ProductIntegration implements PhoneService {
             LOG.debug("Will get phone card from URL: {}", url);
 
             PhoneCardDto phoneCardDto = restTemplate.getForObject(url, PhoneCardDto.class);
-            LOG.debug("Card number is: {}", phoneCardDto.getCode());
-            LOG.debug("Card number is: {}", phoneCardDto.getMessage());
 
             return phoneCardDto;
 

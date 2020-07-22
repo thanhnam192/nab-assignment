@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
-Description: "The Best Video On The World"
+Description: "The Best Phone Service on the World"
 
 Parameters:
   EnvironmentName:
@@ -16,6 +16,7 @@ Globals:
       Variables:
         PHONE_CARD_RESULT_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_phone_card_result"
         PHONE_CARD_ORDER_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_phone_card_order"
+        SMS_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_sms"
 
 
 Resources:
@@ -38,6 +39,15 @@ Resources:
     Properties:
       QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_result"]]
       VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt PhoneCardOrderResultDeadQueue.Arn
+        maxReceiveCount: 5
+
+  PhoneCardOrderResultDeadQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_order_result_dead"]]
+      VisibilityTimeout: 300
 
   PhoneCardOrderQueue:
     Type: AWS::SQS::Queue
@@ -52,4 +62,36 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_order_dead"]]
+      VisibilityTimeout: 300
+
+  SendSMS:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist/send-sms/send-sms.zip
+      Policies:
+        - Statement:
+            - Action:
+              - sns:Publish
+              Effect: Allow
+              Resource: "*"
+      Events:
+        SMSMessageCome:
+          Type: SQS
+          Properties:
+            Queue:  !GetAtt SMSQueue.Arn
+            BatchSize: 1
+
+  SMSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "sms"]]
+      VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt SMSDeadQueue.Arn
+        maxReceiveCount: 5
+
+  SMSDeadQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "sms_dead"]]
       VisibilityTimeout: 300

@@ -16,6 +16,10 @@ services:
       - mysql
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - ENV_NAME=demo
+      - AWS_ACCESS_KEY_ID=XXXXXXXXX
+      - AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXX
+      - AWS_DEFAULT_REGION=ap-southeast-2
 
   eureka:
     build: spring-cloud/eureka-server

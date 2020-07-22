@@ -18,26 +18,29 @@ exports.handler = async (event) => {
 
     const phoneCardOrder = new PhoneCardOrder(body);
 
-    if( phoneCardOrder.phoneNumber.toLowerCase() !== "0986329076" ) {
-        phoneCardOrder.cardNumer = Math.floor(100000000 + Math.random() * 900000000);
-        phoneCardOrder.status = OrderStatus.FINISH;
-        phoneCardOrder.message = "Your Phone Card Order is successfully";
+     if (  phoneCardOrder.mockSpeed && phoneCardOrder.mockSpeed.toLowerCase() === "slow"  ) {
+         console.log("Mock Speed: SLOW");
+         console.log("Simulate case 3rd party process order very slow (30 ~ 120 seconds)");
 
-    } else if ( phoneCardOrder.phoneNumber.toLowerCase() === "0986329077"  ) {
-        //Simulate case 3rd party process order very slow (30 ~ 120 seconds)
         await new Promise(resolve => setTimeout(resolve, 31 * 1000));
-        phoneCardOrder.cardNumer = Math.floor(100000000 + Math.random() * 900000000);
+        phoneCardOrder.cardNumber = Math.floor(100000000 + Math.random() * 900000000);
         phoneCardOrder.status = OrderStatus.FINISH;
-        phoneCardOrder.message = "Your Phone Card Order is successfully";
+        phoneCardOrder.message = "Your Phone Card Order is successfully - Slow Case";
 
-    } else if ( phoneCardOrder.phoneNumber.toLowerCase() === "0986329076" ) {
-        // 3rd got error when processing order
-        phoneCardOrder.cardNumer = "";
+    } else if ( phoneCardOrder.mockSpeed && phoneCardOrder.mockSpeed.toLowerCase() === "error" ) {
+         console.log("Mock Speed: ERROR");
+         console.log("Simulate case 3rd got error when processing order");
+        phoneCardOrder.cardNumber = "";
         phoneCardOrder.status = OrderStatus.ERROR;
-        phoneCardOrder.message = "3rd party failed when processing order";
+        phoneCardOrder.message = "3rd party failed when processing order - Error Case";
+    } else {
+         console.log("Mock Speed: FAST/NORMAL");
+         console.log("Simulate case 3rd process order fast/normal");
+        phoneCardOrder.cardNumber = Math.floor(100000000 + Math.random() * 900000000);
+        phoneCardOrder.status = OrderStatus.FINISH;
+        phoneCardOrder.message = "Your Phone Card Order is successfully - Fast Case";
     }
 
-    phoneCardOrder.taolao = "dasdas";
 
 
     // send message to success queue
@@ -47,7 +50,7 @@ exports.handler = async (event) => {
         MessageBody: JSON.stringify(phoneCardOrder),
         QueueUrl: PHONE_CARD_RESULT_SQS_URL
     };
-
+    console.log("Send message to success queue");
     await  sqs.sendMessage(params).promise();
     //delete message
     const deleteParam = {

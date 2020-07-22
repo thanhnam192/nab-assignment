@@ -29,16 +29,18 @@ public class PhoneController implements PhoneCardService {
     }
 
     @Override
-    public ResponseEntity<String> buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto) {
-
+    public ResponseEntity<PhoneCardDto> buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto) {
+        PhoneCardDto phoneCardDto =  new PhoneCardDto();
         try {
-            this.phoneCardLogic.createPhoneCardOrder(phoneCardOrderDto);
+            phoneCardDto = this.phoneCardLogic.createPhoneCardOrder(phoneCardOrderDto);
+            phoneCardDto.setMessage("Your order is processing");
         } catch (IOException e) {
            LOG.error(e.getMessage());
-            return new ResponseEntity<>("Created phone card order failed", HttpStatus.INTERNAL_SERVER_ERROR);
+            phoneCardDto.setMessage("Created phone card order failed");
+            return new ResponseEntity<>(phoneCardDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return ResponseEntity.ok().body("Create phone card order successfully. You will receive phone card in less than 120 seconds");
+        return ResponseEntity.ok().body(phoneCardDto);
     }
 
     @Override
@@ -48,12 +50,15 @@ public class PhoneController implements PhoneCardService {
         }
 
         LOG.debug("Get card number for orderId: {}",orderId);
-        PhoneCardDto phoneCardDto = new PhoneCardDto();
+        PhoneCardDto phoneCardDto =  new PhoneCardDto();
+        try {
+            phoneCardDto = phoneCardLogic.getPhoneCard(orderId);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            phoneCardDto.setMessage("Something wrong. Please try again later!");
+            return new ResponseEntity<>(phoneCardDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        phoneCardDto.setCode("123");
-        phoneCardDto.setMessage("OK");
-        phoneCardDto.setSuccess(true);
-        phoneCardDto.setPhoneNumber("312312312");
         return ResponseEntity.ok().body(phoneCardDto);
     }
 }

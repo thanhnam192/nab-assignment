@@ -15,5 +15,5 @@ public interface ProductService {
     ResponseEntity<PhoneCardDto> getPhoneCard(@PathVariable  String orderId);
 
     @PostMapping(value = "/phone/card/buy")
-    ResponseEntity<String> buyPhoneCard(@Valid @RequestBody PhoneCardOrderDto phoneCardOrderDto);
+    ResponseEntity<PhoneCardDto> buyPhoneCard(@Valid @RequestBody PhoneCardOrderDto phoneCardOrderDto);
 }

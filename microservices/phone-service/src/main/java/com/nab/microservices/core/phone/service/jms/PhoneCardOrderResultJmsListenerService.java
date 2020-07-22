@@ -20,7 +20,7 @@ public class PhoneCardOrderResultJmsListenerService {
     private PhoneCardLogic phoneCardLogic;
 
     @JmsListener(destination = "${application.queue.result}")
-    public void createThumbnail(String responseJSON) throws JMSException {
+    public void updatePhoneCardOrder(String responseJSON) throws Exception {
         LOG.info("Received Order Result : " + responseJSON);
         try {
             PhoneCardOrderSQSDto phoneCardOrderSQSDto = PhoneCardOrderSQSDto.fromJSON(responseJSON);

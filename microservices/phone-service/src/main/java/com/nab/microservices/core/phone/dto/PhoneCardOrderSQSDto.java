@@ -3,12 +3,13 @@ package com.nab.microservices.core.phone.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nab.microservices.core.phone.enums.MockProcessSpeed;
 import com.nab.microservices.core.phone.enums.PhoneCardOrderStatus;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PhoneCardOrderSQSDto {
     private String phoneNumber;
     private String orderId;
@@ -17,6 +18,7 @@ public class PhoneCardOrderSQSDto {
     private String cardNumber;
     private PhoneCardOrderStatus status;
     private String message;
+    private MockProcessSpeed mockSpeed = MockProcessSpeed.fast;
 
     public String getOrderId() {
         return orderId;
@@ -73,6 +75,14 @@ public class PhoneCardOrderSQSDto {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public MockProcessSpeed getMockSpeed() {
+        return mockSpeed;
+    }
+
+    public void setMockSpeed(MockProcessSpeed mockSpeed) {
+        this.mockSpeed = mockSpeed;
     }
 
     public static PhoneCardOrderSQSDto fromJSON(String json)

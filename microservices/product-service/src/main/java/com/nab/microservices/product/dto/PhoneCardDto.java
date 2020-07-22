@@ -1,10 +1,16 @@
 package com.nab.microservices.product.dto;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
 public class PhoneCardDto {
     private String phoneNumber;
-    private String code;
+    private String cardNumber;
+    private String status;
+    private String mobileNetwork;
+    private BigDecimal price;
+    private Timestamp createdAt;
     private String message;
-    private boolean success;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -14,12 +20,44 @@ public class PhoneCardDto {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getCode() {
-        return code;
+    public String getCardNumber() {
+        return cardNumber;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMobileNetwork() {
+        return mobileNetwork;
+    }
+
+    public void setMobileNetwork(String mobileNetwork) {
+        this.mobileNetwork = mobileNetwork;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getMessage() {
@@ -28,13 +66,5 @@ public class PhoneCardDto {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 }

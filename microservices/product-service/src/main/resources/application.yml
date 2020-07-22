@@ -1,6 +1,8 @@
 server:
   port: 7070
 
+application:
+  mockSpeed: true
 spring.application.name: product
 
 eureka:

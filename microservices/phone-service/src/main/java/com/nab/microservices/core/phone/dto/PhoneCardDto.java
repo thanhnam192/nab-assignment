@@ -16,6 +16,7 @@ public class PhoneCardDto {
     private String mobileNetwork;
     private BigDecimal price;
     private Timestamp createdAt;
+    private String orderId;
     private String message;
 
     public String getPhoneNumber() {
@@ -74,6 +75,14 @@ public class PhoneCardDto {
         this.message = message;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public static PhoneCardDto fromPhoneCard(PhoneCard phoneCard) {
         PhoneCardDto phoneCardDto = new PhoneCardDto();
         phoneCardDto.setPhoneNumber(phoneCard.getPhoneNumber());
@@ -82,6 +91,7 @@ public class PhoneCardDto {
         phoneCardDto.setPrice(phoneCard.getPrice());
         phoneCardDto.setStatus(phoneCard.getStatus().toString());
         phoneCardDto.setCreatedAt(phoneCard.getTimestamp());
+        phoneCardDto.setOrderId(phoneCard.getOrderId());
 
         return phoneCardDto;
     }

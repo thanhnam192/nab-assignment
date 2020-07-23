@@ -1,0 +1,132 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: The Best Phone Service on the World
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: demo
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 300
+    Handler: index.handler
+    Environment:
+      Variables:
+        PHONE_CARD_RESULT_SQS_URL:
+          Fn::Sub: https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_phone_card_result
+        PHONE_CARD_ORDER_SQS_URL:
+          Fn::Sub: https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_phone_card_order
+        SMS_SQS_URL:
+          Fn::Sub: https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_sms
+Resources:
+  GetPhoneCard:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://demo.build.nab/57eb9f907ba239f72a0a1d271b35f5ed
+      Policies:
+      - SQSSendMessagePolicy:
+          QueueName:
+            Fn::Join:
+            - _
+            - - Ref: EnvironmentName
+              - phone_card_result
+      Events:
+        PhoneCardOrderCome:
+          Type: SQS
+          Properties:
+            Queue:
+              Fn::GetAtt:
+              - PhoneCardOrderQueue
+              - Arn
+            BatchSize: 1
+  PhoneCardResultQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Join:
+        - _
+        - - Ref: EnvironmentName
+          - phone_card_result
+      VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - PhoneCardOrderResultDeadQueue
+          - Arn
+        maxReceiveCount: 5
+  PhoneCardOrderResultDeadQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Join:
+        - _
+        - - Ref: EnvironmentName
+          - phone_card_order_result_dead
+      VisibilityTimeout: 300
+  PhoneCardOrderQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Join:
+        - _
+        - - Ref: EnvironmentName
+          - phone_card_order
+      VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - PhoneCardOrderDeadQueue
+          - Arn
+        maxReceiveCount: 5
+  PhoneCardOrderDeadQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Join:
+        - _
+        - - Ref: EnvironmentName
+          - phone_card_order_dead
+      VisibilityTimeout: 300
+  SendSMS:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://demo.build.nab/9f4ad9b4561f06907589ea697e12dff8
+      Policies:
+      - Statement:
+        - Action:
+          - sns:Publish
+          Effect: Allow
+          Resource: '*'
+      Events:
+        SMSMessageCome:
+          Type: SQS
+          Properties:
+            Queue:
+              Fn::GetAtt:
+              - SMSQueue
+              - Arn
+            BatchSize: 1
+  SMSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Join:
+        - _
+        - - Ref: EnvironmentName
+          - sms
+      VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - SMSDeadQueue
+          - Arn
+        maxReceiveCount: 5
+  SMSDeadQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Join:
+        - _
+        - - Ref: EnvironmentName
+          - sms_dead
+      VisibilityTimeout: 300

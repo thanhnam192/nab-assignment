@@ -1,15 +1,16 @@
 package com.nab.microservices.core.phone.logic;
 
 
-import com.nab.microservices.core.phone.dto.VoucherDto;
-import com.nab.microservices.core.phone.dto.VoucherOrderDto;
-import com.nab.microservices.core.phone.dto.VoucherOrderSQSDto;
-import com.nab.microservices.core.phone.dto.SmsSQSDto;
+import com.nab.microservices.core.phone.dto.*;
 import com.nab.microservices.core.phone.enums.VoucherOrderStatus;
+import com.nab.microservices.core.phone.exceptions.InvalidInputException;
+import com.nab.microservices.core.phone.persistence.PhoneVerification;
+import com.nab.microservices.core.phone.persistence.PhoneVerificationRepository;
 import com.nab.microservices.core.phone.persistence.Voucher;
 import com.nab.microservices.core.phone.persistence.VoucherRepository;
 import com.nab.microservices.core.phone.service.jms.VoucherOrderCreationNotification;
 import com.nab.microservices.core.phone.service.jms.SMSCreationNotification;
+import com.nab.microservices.core.phone.util.TimeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class VoucherLogic {
@@ -27,14 +31,20 @@ public class VoucherLogic {
     private VoucherRepository voucherRepository;
     private VoucherOrderCreationNotification orderCreationNotification;
     private SMSCreationNotification smsCreationNotification;
+    private PhoneVerificationRepository phoneVerificationRepository;
+    private static final int MAX_WAIT_TIME = 30;
     @Value("${application.mockSpeed}")
     private boolean mockSpeed;
 
 
-    public VoucherLogic(VoucherRepository voucherRepository, VoucherOrderCreationNotification orderCreationNotification, SMSCreationNotification smsCreationNotification){
+    public VoucherLogic(VoucherRepository voucherRepository,
+                        VoucherOrderCreationNotification orderCreationNotification,
+                        SMSCreationNotification smsCreationNotification,
+                        PhoneVerificationRepository phoneVerificationRepository){
         this.voucherRepository = voucherRepository;
         this.orderCreationNotification = orderCreationNotification;
         this.smsCreationNotification = smsCreationNotification;
+        this.phoneVerificationRepository = phoneVerificationRepository;
     }
 
     public VoucherDto createVoucherOrder(VoucherOrderDto voucherOrderDto) throws IOException {
@@ -65,12 +75,12 @@ public class VoucherLogic {
 
     }
 
-    public void updateVoucherCode(VoucherOrderSQSDto voucherOrderSQSDto) throws Exception {
+    public void updateVoucherCode(VoucherOrderSQSDto voucherOrderSQSDto)  throws IOException  {
         String orderId = voucherOrderSQSDto.getOrderId();
         Optional<Voucher> voucherOptional = voucherRepository.findFirstByOrderId(orderId);
         if( !voucherOptional.isPresent() ) {
             LOG.error("Can not find voucher information by orderID: " + orderId);
-            throw new Exception("Can not find Voucher Order by OrderId " + orderId);
+            throw new InvalidInputException("Can not find Voucher Order by OrderId " + orderId);
         }
 
         Voucher voucher = voucherOptional.get();
@@ -79,7 +89,8 @@ public class VoucherLogic {
 
         voucherRepository.save(voucher);
 
-        if( voucher.getStatus() == VoucherOrderStatus.finish ) {
+        long periodTimeInSecond = TimeUtil.differenceInSecondWithCurrentTime(voucher.getTimestamp());
+        if( voucher.getStatus() == VoucherOrderStatus.finish && periodTimeInSecond > MAX_WAIT_TIME ) {
             sendVoucherCodeSMS(voucher);
         }
     }
@@ -91,23 +102,57 @@ public class VoucherLogic {
         this.smsCreationNotification.notificationRequest(smsSQSDto);
     }
 
-    public VoucherDto getVoucher(String orderId) throws Exception {
+    public VoucherDto getVoucher(String orderId) {
         if ( StringUtils.isBlank(orderId) ) return null;
 
         Optional<Voucher> voucherOptional = voucherRepository.findFirstByOrderId(orderId);
         if( !voucherOptional.isPresent() ) {
             LOG.error("Can not find voucher information by orderID: " + orderId);
-            throw new Exception("Can not find voucher by OrderId " + orderId);
+            VoucherDto voucherDto = new VoucherDto();
+            voucherDto.setOrderId(orderId);
+            voucherDto.setMessage("Can not find voucher information by orderID: " + orderId);
+            return voucherDto;
         }
 
         Voucher voucher = voucherOptional.get();
         VoucherDto voucherDto = VoucherDto.fromVoucher(voucher);
 
+
         if( voucher.getStatus() == VoucherOrderStatus.processing ) {
-            voucherDto.setMessage("Your voucher is processing. We will send sms to you when it's finish");
+            long periodTimeInSecond = TimeUtil.differenceInSecondWithCurrentTime(voucher.getTimestamp());
+
+            if ( periodTimeInSecond <= MAX_WAIT_TIME ) {
+                voucherDto.setMessage("Voucher order request is being processed within 30 seconds");
+            } else {
+                voucherDto.setMessage("It take long time to process you order. We will send SMS to you when it's finish");
+            }
+
         }
 
 
         return voucherDto;
+    }
+
+    public List<VoucherDto> getAllVouchersWithAuth(AuthenticationDto authenticationDto){
+        Optional<PhoneVerification> phoneVerificationOptional = this.phoneVerificationRepository.findFirstByPhoneNumberAndCode(authenticationDto.getPhoneNumber(), authenticationDto.getCode());
+        if ( !phoneVerificationOptional.isPresent() ) {
+            return new ArrayList<>();
+        }
+
+        resetVerificationCode(phoneVerificationOptional.get());
+
+        Optional<List<Voucher>> allVoucherOptional = voucherRepository.findAllByPhoneNumber(authenticationDto.getPhoneNumber());
+
+        if( allVoucherOptional.isPresent() ) {
+            List<VoucherDto> vouchers = allVoucherOptional.get().stream().map(VoucherDto::fromVoucher).collect(Collectors.toList());
+            return vouchers;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    private void resetVerificationCode(PhoneVerification phoneVerification){
+        phoneVerification.setCode("");
+        phoneVerificationRepository.save(phoneVerification);
     }
 }

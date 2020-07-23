@@ -37,7 +37,7 @@ class GlobalControllerExceptionHandler {
         final String path = request.getPath().pathWithinApplication().value();
         final String message = ex.getMessage();
 
-        LOG.debug("Returning HTTP status: {} for path: {}, message: {}", httpStatus, path, message);
+        LOG.info("Returning HTTP status: {} for path: {}, message: {}", httpStatus, path, message);
         return new HttpErrorInfo(httpStatus, path, message);
     }
 }

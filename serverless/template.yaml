@@ -16,12 +16,14 @@ Globals:
       Variables:
         VOUCHER_RESULT_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_voucher_result"
         VOUCHER_ORDER_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_voucher_order"
+        AUTH_TIMER_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_timer"
+        AUTH_TIMER_EXPIRED_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_timer_expired"
         SMS_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_sms"
-        TWILIO_ACCOUNT_SID: xxxxxxxxxxxx
-        TWILIO_ACCOUNT_AUTH: xxxx
-        TWILIO_PHONE_NUMBER: "+xxx"
+        TWILIO_ACCOUNT_SID: xxxxxxxx
+        TWILIO_ACCOUNT_AUTH: xxxxxxxxxx
+        TWILIO_PHONE_NUMBER: "+xxxxx"
 
-
+        
 Resources:
   GetVoucher:
     Type: AWS::Serverless::Function
@@ -97,4 +99,48 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Join ["_",[!Ref EnvironmentName , "sms_dead"]]
+      VisibilityTimeout: 300
+
+  AuthTimerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist/auth-timer/auth-timer.zip
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !Join ["_",[!Ref EnvironmentName , "timer_expired"]]
+      Events:
+        VoucherOrderCome:
+          Type: SQS
+          Properties:
+            Queue:  !GetAtt AuthTimerQueue.Arn
+            BatchSize: 1
+
+  AuthTimerQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "timer"]]
+      VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt AuthTimerDeadQueue.Arn
+        maxReceiveCount: 5
+
+  AuthTimerDeadQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "timer_dead"]]
+      VisibilityTimeout: 300
+  
+  AuthTimerExpiredQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "timer_expired"]]
+      VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt AuthTimerExpiredDeadQueue.Arn
+        maxReceiveCount: 5
+
+  AuthTimerExpiredDeadQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Join ["_",[!Ref EnvironmentName , "timer_expired_dead"]]
       VisibilityTimeout: 300

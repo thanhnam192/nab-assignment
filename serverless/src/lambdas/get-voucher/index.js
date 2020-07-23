@@ -22,7 +22,7 @@ exports.handler = async (event) => {
          console.log("Mock Speed: SLOW");
          console.log("Simulate case 3rd party process order very slow (30 ~ 120 seconds)");
 
-        await new Promise(resolve => setTimeout(resolve, 31 * 1000));
+        await new Promise(resolve => setTimeout(resolve, 35 * 1000));
         voucherOrder.voucherCode = Math.floor(100000000 + Math.random() * 900000000);
         voucherOrder.status = OrderStatus.FINISH;
         voucherOrder.message = "Your Voucher Order is successfully - Slow Case";

@@ -28,6 +28,8 @@ application:
     order: ${env.name}_voucher_order
     result: ${env.name}_voucher_result
     sms: ${env.name}_sms
+    authTimer:  ${env.name}_timer
+    authTimerExpired:  ${env.name}_timer_expired
 ---
 spring.profiles: docker
 

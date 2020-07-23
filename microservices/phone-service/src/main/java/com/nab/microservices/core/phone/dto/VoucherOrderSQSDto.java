@@ -87,7 +87,7 @@ public class VoucherOrderSQSDto {
     }
 
     public static VoucherOrderSQSDto fromJSON(String json)
-            throws JsonProcessingException, IOException {
+            throws IOException {
         ObjectMapper objectMapper=new ObjectMapper();
         return objectMapper.readValue(json, VoucherOrderSQSDto.class);
     }

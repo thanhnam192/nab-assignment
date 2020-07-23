@@ -3,9 +3,9 @@ package com.nab.microservices.product.dto;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class PhoneCardDto {
+public class VoucherDto {
     private String phoneNumber;
-    private String cardNumber;
+    private String voucherCode;
     private String status;
     private String mobileNetwork;
     private BigDecimal price;
@@ -21,12 +21,12 @@ public class PhoneCardDto {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public String getVoucherCode() {
+        return voucherCode;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setVoucherCode(String voucherCode) {
+        this.voucherCode = voucherCode;
     }
 
     public String getStatus() {

@@ -1,5 +1,5 @@
 npm run build
 
-sam package --s3-bucket nab-deploy --output-template-file dev-template.yaml --region ap-southeast-2
+sam package --s3-bucket demo.build.nab --output-template-file demo-template.yaml --region ap-southeast-2
 
 sam deploy --template-file D:\git\nab-assignment\serverless\demo-template.yaml  --stack-name demo-nab --capabilities CAPABILITY_IAM --region ap-southeast-2

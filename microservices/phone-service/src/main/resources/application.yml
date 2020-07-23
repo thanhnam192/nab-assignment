@@ -25,8 +25,8 @@ spring.datasource.hikari.initializationFailTimeout: 60000
 application:
   mockSpeed: true
   queue:
-    order: ${env.name}_phone_card_order
-    result: ${env.name}_phone_card_result
+    order: ${env.name}_voucher_order
+    result: ${env.name}_voucher_result
     sms: ${env.name}_sms
 ---
 spring.profiles: docker

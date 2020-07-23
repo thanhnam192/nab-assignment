@@ -12,6 +12,7 @@
     "aws-sdk": "^2.715.0",
     "babel-loader": "^8.1.0",
     "hard-source-webpack-plugin": "^0.13.1",
+    "twilio": "^3.48.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^2.5.0",

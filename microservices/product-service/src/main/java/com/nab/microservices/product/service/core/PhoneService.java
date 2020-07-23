@@ -1,9 +1,9 @@
 package com.nab.microservices.product.service.core;
 
-import com.nab.microservices.product.dto.PhoneCardDto;
-import com.nab.microservices.product.dto.PhoneCardOrderDto;
+import com.nab.microservices.product.dto.VoucherDto;
+import com.nab.microservices.product.dto.VoucherOrderDto;
 
 public interface PhoneService {
-    PhoneCardDto buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto);
-    PhoneCardDto getPhoneCard(String orderId);
+    VoucherDto buyVoucher(VoucherOrderDto voucherOrderDto);
+    VoucherDto getVoucher(String orderId);
 }

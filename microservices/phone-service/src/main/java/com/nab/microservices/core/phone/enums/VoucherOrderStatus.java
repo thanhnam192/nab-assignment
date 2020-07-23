@@ -1,6 +1,6 @@
 package com.nab.microservices.core.phone.enums;
 
-public enum PhoneCardOrderStatus {
+public enum VoucherOrderStatus {
     processing,
     finish,
     error;

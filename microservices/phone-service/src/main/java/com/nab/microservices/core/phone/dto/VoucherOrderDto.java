@@ -5,7 +5,7 @@ import com.nab.microservices.core.phone.enums.MockProcessSpeed;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
-public class PhoneCardOrderDto {
+public class VoucherOrderDto {
     @NotBlank
     @Pattern(regexp = "^\\+[1-9]\\d{1,14}$")
     @Size(min = 10)

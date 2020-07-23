@@ -1,15 +1,15 @@
 package com.nab.microservices.core.phone.persistence;
 
 
-import com.nab.microservices.core.phone.enums.PhoneCardOrderStatus;
+import com.nab.microservices.core.phone.enums.VoucherOrderStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "phone_card")
-public class PhoneCard {
+@Table(name = "voucher")
+public class Voucher {
     @Id
     @GeneratedValue
     private Integer id;
@@ -20,11 +20,11 @@ public class PhoneCard {
     @Column(name = "order_id", unique = true)
     private String orderId;
 
-    @Column(name = "card_number")
-    private String cardNumber;
+    @Column(name = "voucher_code")
+    private String voucherCode;
 
     @Enumerated(EnumType.STRING)
-    private PhoneCardOrderStatus status;
+    private VoucherOrderStatus status;
     private Timestamp timestamp;
 
     @Column(name = "mobile_network", nullable = false)
@@ -57,11 +57,11 @@ public class PhoneCard {
         this.orderId = orderId;
     }
 
-    public PhoneCardOrderStatus getStatus() {
+    public VoucherOrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(PhoneCardOrderStatus status) {
+    public void setStatus(VoucherOrderStatus status) {
         this.status = status;
     }
 
@@ -73,12 +73,12 @@ public class PhoneCard {
         this.timestamp = timestamp;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public String getVoucherCode() {
+        return voucherCode;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setVoucherCode(String voucherCode) {
+        this.voucherCode = voucherCode;
     }
 
     public String getMobileNetwork() {

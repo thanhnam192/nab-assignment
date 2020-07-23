@@ -2,16 +2,15 @@ package com.nab.microservices.core.phone.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.nab.microservices.core.phone.enums.PhoneCardOrderStatus;
-import com.nab.microservices.core.phone.persistence.PhoneCard;
+import com.nab.microservices.core.phone.persistence.Voucher;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @JsonInclude(Include.NON_NULL)
-public class PhoneCardDto {
+public class VoucherDto {
     private String phoneNumber;
-    private String cardNumber;
+    private String voucherCode;
     private String status;
     private String mobileNetwork;
     private BigDecimal price;
@@ -27,12 +26,12 @@ public class PhoneCardDto {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public String getVoucherCode() {
+        return voucherCode;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setVoucherCode(String voucherCode) {
+        this.voucherCode = voucherCode;
     }
 
     public String getStatus() {
@@ -83,16 +82,16 @@ public class PhoneCardDto {
         this.orderId = orderId;
     }
 
-    public static PhoneCardDto fromPhoneCard(PhoneCard phoneCard) {
-        PhoneCardDto phoneCardDto = new PhoneCardDto();
-        phoneCardDto.setPhoneNumber(phoneCard.getPhoneNumber());
-        phoneCardDto.setCardNumber(phoneCard.getCardNumber());
-        phoneCardDto.setMobileNetwork(phoneCard.getMobileNetwork());
-        phoneCardDto.setPrice(phoneCard.getPrice());
-        phoneCardDto.setStatus(phoneCard.getStatus().toString());
-        phoneCardDto.setCreatedAt(phoneCard.getTimestamp());
-        phoneCardDto.setOrderId(phoneCard.getOrderId());
+    public static VoucherDto fromVoucher(Voucher voucher) {
+        VoucherDto voucherDto = new VoucherDto();
+        voucherDto.setPhoneNumber(voucher.getPhoneNumber());
+        voucherDto.setVoucherCode(voucher.getVoucherCode());
+        voucherDto.setMobileNetwork(voucher.getMobileNetwork());
+        voucherDto.setPrice(voucher.getPrice());
+        voucherDto.setStatus(voucher.getStatus().toString());
+        voucherDto.setCreatedAt(voucher.getTimestamp());
+        voucherDto.setOrderId(voucher.getOrderId());
 
-        return phoneCardDto;
+        return voucherDto;
     }
 }

@@ -4,19 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nab.microservices.core.phone.enums.MockProcessSpeed;
-import com.nab.microservices.core.phone.enums.PhoneCardOrderStatus;
+import com.nab.microservices.core.phone.enums.VoucherOrderStatus;
+import com.nab.microservices.core.phone.persistence.Voucher;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PhoneCardOrderSQSDto {
+public class VoucherOrderSQSDto {
     private String phoneNumber;
     private String orderId;
     private String mobileNetwork;
     private BigDecimal price;
-    private String cardNumber;
-    private PhoneCardOrderStatus status;
+    private String voucherCode;
+    private VoucherOrderStatus status;
     private String message;
     private MockProcessSpeed mockSpeed = MockProcessSpeed.fast;
 
@@ -28,19 +29,19 @@ public class PhoneCardOrderSQSDto {
         this.orderId = orderId;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public String getVoucherCode() {
+        return voucherCode;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setVoucherCode(String voucherCode) {
+        this.voucherCode = voucherCode;
     }
 
-    public PhoneCardOrderStatus getStatus() {
+    public VoucherOrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(PhoneCardOrderStatus status) {
+    public void setStatus(VoucherOrderStatus status) {
         this.status = status;
     }
 
@@ -85,15 +86,25 @@ public class PhoneCardOrderSQSDto {
         this.mockSpeed = mockSpeed;
     }
 
-    public static PhoneCardOrderSQSDto fromJSON(String json)
+    public static VoucherOrderSQSDto fromJSON(String json)
             throws JsonProcessingException, IOException {
         ObjectMapper objectMapper=new ObjectMapper();
-        return objectMapper.readValue(json, PhoneCardOrderSQSDto.class);
+        return objectMapper.readValue(json, VoucherOrderSQSDto.class);
     }
 
     public String toJSON() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
         return objectMapper.writeValueAsString(this);
+    }
+
+    public static VoucherOrderSQSDto from(Voucher voucher){
+        VoucherOrderSQSDto voucherOrderSQSDto =  new VoucherOrderSQSDto();
+        voucherOrderSQSDto.setOrderId(voucher.getOrderId());
+        voucherOrderSQSDto.setPhoneNumber(voucher.getPhoneNumber());
+        voucherOrderSQSDto.setMobileNetwork(voucher.getMobileNetwork());
+        voucherOrderSQSDto.setPrice(voucher.getPrice());
+
+        return voucherOrderSQSDto;
     }
 }

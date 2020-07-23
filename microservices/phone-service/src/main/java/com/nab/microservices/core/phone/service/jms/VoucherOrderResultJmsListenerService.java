@@ -1,7 +1,7 @@
 package com.nab.microservices.core.phone.service.jms;
 
-import com.nab.microservices.core.phone.dto.PhoneCardOrderSQSDto;
-import com.nab.microservices.core.phone.logic.PhoneCardLogic;
+import com.nab.microservices.core.phone.dto.VoucherOrderSQSDto;
+import com.nab.microservices.core.phone.logic.VoucherLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,20 +12,20 @@ import javax.jms.JMSException;
 import java.io.IOException;
 
 @Component
-public class PhoneCardOrderResultJmsListenerService {
+public class VoucherOrderResultJmsListenerService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PhoneCardOrderResultJmsListenerService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VoucherOrderResultJmsListenerService.class);
 
     @Autowired
-    private PhoneCardLogic phoneCardLogic;
+    private VoucherLogic voucherLogic;
 
     @JmsListener(destination = "${application.queue.result}")
-    public void updatePhoneCardOrder(String responseJSON) throws Exception {
+    public void updateVoucher(String responseJSON) throws Exception {
         LOG.info("Received Order Result : " + responseJSON);
         try {
-            PhoneCardOrderSQSDto phoneCardOrderSQSDto = PhoneCardOrderSQSDto.fromJSON(responseJSON);
-            LOG.info(phoneCardOrderSQSDto.getMessage());
-            phoneCardLogic.updatePhoneCardOrderCode(phoneCardOrderSQSDto);
+            VoucherOrderSQSDto voucherOrderSQSDto = VoucherOrderSQSDto.fromJSON(responseJSON);
+            LOG.info(voucherOrderSQSDto.getMessage());
+            voucherLogic.updateVoucherCode(voucherOrderSQSDto);
         } catch (IOException ex) {
             LOG.error("Encountered error while parsing message.",ex);
             throw new JMSException("Encountered error while parsing message.");

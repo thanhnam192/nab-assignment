@@ -14,54 +14,57 @@ Globals:
     Handler: index.handler
     Environment:
       Variables:
-        PHONE_CARD_RESULT_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_phone_card_result"
-        PHONE_CARD_ORDER_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_phone_card_order"
+        VOUCHER_RESULT_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_voucher_result"
+        VOUCHER_ORDER_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_voucher_order"
         SMS_SQS_URL: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${EnvironmentName}_sms"
+        TWILIO_ACCOUNT_SID: xxxxxxxxxxxx
+        TWILIO_ACCOUNT_AUTH: xxxx
+        TWILIO_PHONE_NUMBER: "+xxx"
 
 
 Resources:
-  GetPhoneCard:
+  GetVoucher:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./dist/get-phone-card/get-phone-card.zip
+      CodeUri: ./dist/get-voucher/get-voucher.zip
       Policies:
         - SQSSendMessagePolicy:
-            QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_result"]]
+            QueueName: !Join ["_",[!Ref EnvironmentName , "voucher_result"]]
       Events:
-        PhoneCardOrderCome:
+        VoucherOrderCome:
           Type: SQS
           Properties:
-            Queue:  !GetAtt PhoneCardOrderQueue.Arn
+            Queue:  !GetAtt VoucherOrderQueue.Arn
             BatchSize: 1
 
-  PhoneCardResultQueue:
+  VoucherResultQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_result"]]
+      QueueName: !Join ["_",[!Ref EnvironmentName , "voucher_result"]]
       VisibilityTimeout: 300
       RedrivePolicy:
-        deadLetterTargetArn: !GetAtt PhoneCardOrderResultDeadQueue.Arn
+        deadLetterTargetArn: !GetAtt VoucherOrderResultDeadQueue.Arn
         maxReceiveCount: 5
 
-  PhoneCardOrderResultDeadQueue:
+  VoucherOrderResultDeadQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_order_result_dead"]]
+      QueueName: !Join ["_",[!Ref EnvironmentName , "voucher_order_result_dead"]]
       VisibilityTimeout: 300
 
-  PhoneCardOrderQueue:
+  VoucherOrderQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_order"]]
+      QueueName: !Join ["_",[!Ref EnvironmentName , "voucher_order"]]
       VisibilityTimeout: 300
       RedrivePolicy:
-        deadLetterTargetArn: !GetAtt PhoneCardOrderDeadQueue.Arn
+        deadLetterTargetArn: !GetAtt VoucherOrderDeadQueue.Arn
         maxReceiveCount: 5
 
-  PhoneCardOrderDeadQueue:
+  VoucherOrderDeadQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: !Join ["_",[!Ref EnvironmentName , "phone_card_order_dead"]]
+      QueueName: !Join ["_",[!Ref EnvironmentName , "voucher_order_dead"]]
       VisibilityTimeout: 300
 
   SendSMS:

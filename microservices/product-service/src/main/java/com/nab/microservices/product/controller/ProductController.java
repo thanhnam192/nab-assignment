@@ -1,7 +1,7 @@
 package com.nab.microservices.product.controller;
 
-import com.nab.microservices.product.dto.PhoneCardDto;
-import com.nab.microservices.product.dto.PhoneCardOrderDto;
+import com.nab.microservices.product.dto.VoucherDto;
+import com.nab.microservices.product.dto.VoucherOrderDto;
 import com.nab.microservices.product.enums.MockProcessSpeed;
 import com.nab.microservices.product.service.ProductIntegration;
 import com.nab.microservices.product.service.ProductService;
@@ -20,27 +20,24 @@ public class ProductController implements ProductService {
     @Value("${application.mockSpeed}")
     private boolean mockSpeed;
 
-
-
-
     public ProductController(ProductIntegration productIntegration){
         this.productIntegration = productIntegration;
     }
 
     @Override
-    public ResponseEntity<PhoneCardDto> buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto) {
-        LOG.info("Start to create phone card order");
+    public ResponseEntity<VoucherDto> buyVoucher(VoucherOrderDto voucherOrderDto) {
+        LOG.info("Start to create voucher order");
         if( !mockSpeed ) {
-            phoneCardOrderDto.setMockSpeed(MockProcessSpeed.fast);
+            voucherOrderDto.setMockSpeed(MockProcessSpeed.fast);
         }
-        PhoneCardDto phoneCardDto = this.productIntegration.buyPhoneCard(phoneCardOrderDto);
-        return  ResponseEntity.ok().body(phoneCardDto);
+        VoucherDto voucherDto = this.productIntegration.buyVoucher(voucherOrderDto);
+        return  ResponseEntity.ok().body(voucherDto);
     }
 
     @Override
-    public ResponseEntity<PhoneCardDto> getPhoneCard(String orderId) {
-        PhoneCardDto phoneCard = productIntegration.getPhoneCard(orderId);
-        return  ResponseEntity.ok().body(phoneCard);
+    public ResponseEntity<VoucherDto> getVoucher(String orderId) {
+        VoucherDto voucherDto = productIntegration.getVoucher(orderId);
+        return  ResponseEntity.ok().body(voucherDto);
     }
 
 

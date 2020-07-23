@@ -1,8 +1,8 @@
 package com.nab.microservices.product.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nab.microservices.product.dto.PhoneCardDto;
-import com.nab.microservices.product.dto.PhoneCardOrderDto;
+import com.nab.microservices.product.dto.VoucherDto;
+import com.nab.microservices.product.dto.VoucherOrderDto;
 import com.nab.microservices.product.util.exceptions.HttpErrorInfo;
 import com.nab.microservices.product.util.exceptions.InvalidInputException;
 import com.nab.microservices.product.util.exceptions.NotFoundException;
@@ -32,18 +32,18 @@ public class ProductIntegration implements PhoneService {
     }
 
     @Override
-    public PhoneCardDto buyPhoneCard(PhoneCardOrderDto phoneCardOrderDto) {
+    public VoucherDto buyVoucher(VoucherOrderDto voucherOrderDto) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<PhoneCardOrderDto> httpEntity = new HttpEntity<>(phoneCardOrderDto, headers);
+            HttpEntity<VoucherOrderDto> httpEntity = new HttpEntity<>(voucherOrderDto, headers);
 
-            String url = phoneServiceUrl + "/api/card/buy";
-            LOG.debug("Create phone card order from URL: {}", url);
+            String url = phoneServiceUrl + "/api/voucher/buy";
+            LOG.debug("Create voucher order from URL: {}", url);
 
-            PhoneCardDto phoneCardDto = restTemplate.postForObject(url, httpEntity,PhoneCardDto.class);
+            VoucherDto voucherDto = restTemplate.postForObject(url, httpEntity, VoucherDto.class);
 
-            return phoneCardDto;
+            return voucherDto;
 
         } catch (HttpClientErrorException ex) {
             throw handleHttpClientException(ex);
@@ -51,14 +51,14 @@ public class ProductIntegration implements PhoneService {
     }
 
     @Override
-    public PhoneCardDto getPhoneCard(String orderId) {
+    public VoucherDto getVoucher(String orderId) {
         try {
-            String url = phoneServiceUrl + "/api/card/" + orderId;
-            LOG.debug("Will get phone card from URL: {}", url);
+            String url = phoneServiceUrl + "/api/voucher/" + orderId;
+            LOG.debug("Will get voucher from URL: {}", url);
 
-            PhoneCardDto phoneCardDto = restTemplate.getForObject(url, PhoneCardDto.class);
+            VoucherDto voucherDto = restTemplate.getForObject(url, VoucherDto.class);
 
-            return phoneCardDto;
+            return voucherDto;
 
         } catch (HttpClientErrorException ex) {
             throw handleHttpClientException(ex);

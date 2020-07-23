@@ -1,8 +1,8 @@
-class PhoneCardOrder {
+class VoucherOrder {
     constructor(object){
         this.phoneNumber = object.phoneNumber;
         this.orderId = object.orderId;
-        this.cardNumber = object.cardNumber;
+        this.voucherCode = object.voucherCode;
         this.status = object.status;
         this.message = object.message;
         this.mobileNetwork = object.mobileNetwork;
@@ -11,4 +11,4 @@ class PhoneCardOrder {
     }
 }
 
-module.exports = PhoneCardOrder;
+module.exports = VoucherOrder;

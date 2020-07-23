@@ -1,4 +1,4 @@
-dev-template.yaml
+*-template.yaml
 # Logs
 logs
 *.log

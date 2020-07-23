@@ -136,7 +136,7 @@ public class VoucherLogic {
     public List<VoucherDto> getAllVouchersWithAuth(AuthenticationDto authenticationDto){
         Optional<PhoneVerification> phoneVerificationOptional = this.phoneVerificationRepository.findFirstByPhoneNumberAndCode(authenticationDto.getPhoneNumber(), authenticationDto.getCode());
         if ( !phoneVerificationOptional.isPresent() ) {
-            return new ArrayList<>();
+           throw new InvalidInputException("Phone number or code not valid!");
         }
 
         resetVerificationCode(phoneVerificationOptional.get());

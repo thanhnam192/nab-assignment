@@ -57,9 +57,7 @@ public class PhoneController implements VoucherService, PhoneVerificationService
         }
 
         LOG.debug("Get voucher code for orderId: {}",orderId);
-        VoucherDto voucherDto =  new VoucherDto();
-
-        voucherDto = voucherLogic.getVoucher(orderId);
+        VoucherDto voucherDto = voucherLogic.getVoucher(orderId);
 
         return ResponseEntity.ok().body(voucherDto);
     }

@@ -8,6 +8,7 @@ import com.nab.microservices.core.phone.persistence.PhoneVerificationRepository;
 import com.nab.microservices.core.phone.service.jms.AuthTimerCreationNotification;
 import com.nab.microservices.core.phone.service.jms.SMSCreationNotification;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -41,12 +42,19 @@ public class PhoneVerificationLogic {
 
         if ( phoneVerificationOptional.isPresent() ) {
             phoneVerification = phoneVerificationOptional.get();
+            // Use exist Code if it is not used or timer is not expired
+            if ( StringUtils.isNotBlank(phoneVerification.getCode()) ) {
+                return;
+            }
         } else {
             phoneVerification =  new PhoneVerification();
             phoneVerification.setPhoneNumber(phoneVerificationDto.getPhoneNumber());
         }
 
+
         phoneVerification.setCode(code);
+
+
         phoneVerification.setTimestamp(new Timestamp(System.currentTimeMillis()));
 
         phoneVerificationRepository.save(phoneVerification);

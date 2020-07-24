@@ -24,6 +24,7 @@
     <ul>
       <li>Used to received Voucher Order from Phone Service.</li>
       <li>When recieved voucher order, this queue will trigger Lambda function to buy voucher from 3rd party</li>
+      <li>After Lambda fisnihed to buy an voucher, it will push an message to Voucher Order Result Queue</li>
     </ul>
    </li>
   <li>Voucher Order Result Queue: 
@@ -33,5 +34,20 @@
       <li>Our Phone Service listen this queue and update Voucher Result to databse</li>
     </ul>
    </li>
+  <li>SMS Queue: Used to received SMS request, this queue will trigger Lambda function to send SMS</li>
   
+  <li>Auth Code Timer Queue: 
+    <ul>
+      <li>Used to received message to start timer</li>
+      <li>Timer used to count period time of SMS auth code</li>
+      <li>This queue will trigger Lambda(timer). When timer expired, it will push message to Auth Code Timer Expired Queue</li>
+    </ul>
+  </li>
+  
+   <li>Auth Code Timer Expired Queue: 
+    <ul>
+      <li>Used to received message when Auth Code Timer expired</li>
+      <li>Phone Service listen that queue and reset Auth SMS Code when Timer expired</li>
+    </ul>
+  </li>
  </ul>

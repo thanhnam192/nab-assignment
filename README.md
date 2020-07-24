@@ -52,7 +52,7 @@
   </li>
  </ul>
  
- <h3>MySQL Database</h3>
+ <h3>MySQL Database(phone-db)</h3>
  <ul>
   <li><b>voucher</b> table: Stored all voucher of users</li>
   <li><b>phone_verification</b> table: Store the Auth Code of user. Used to Auth user by sending SMS</li>
@@ -232,7 +232,7 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
  <p>- Get Voucher</p>
   
  ```
- curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PRVEIOUS_STEP} -s | jq
+ curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PREVIOUS_STEP} -s | jq
  ```
  
   <b>2. Buy Voucher with mockSpeed="slow"(Voucher order processed time greater than 30s)</b>
@@ -245,7 +245,7 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
  <p>- Get Voucher: You will get an Processing message</p>
   
  ```
- curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PRVEIOUS_STEP} -s | jq
+ curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PREVIOUS_STEP} -s | jq
  ```
   
   <p>- Wait for 31 seconds and get Voucher Code in your phone</p>

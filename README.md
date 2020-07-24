@@ -107,12 +107,22 @@
     </ul>
   </li>
   </ul>
+  
+```
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/voucher/buy --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\",\"mobileNetwork\" : \"Viettel\",\"price\" : 555,\"mockSpeed\": \"fast\"}" -s | jq
+```
+  
   <b>2. Get Voucher by OrderId</b>
   <ul>
    <li>Url: http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID} </li>
   <li>Method: GET</li>
   <li>Request Body: none</li>
   </ul>
+  
+ ```
+ curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID} -s | jq
+ ```
+  
   
    <b>3. Send Auth Code by SMS</b>
   <ul>
@@ -128,6 +138,10 @@
     
   </li>
   </ul>
+  
+```
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/verification/sms --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\"}" -s | jq
+```
   
   <b>4. Get all Voucher that you purchased</b>
     <ul>
@@ -145,6 +159,10 @@
     </ul>
   </li>
   </ul>
+  
+ ```
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/voucher/all --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\", \"code\" : \"<YOUR_CODE>\"}" -s | jq
+```
   
   
   <h3>--------------------------Let Run Our Application on Local-------------------------------</h3>
@@ -204,7 +222,7 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
  <p>- Get Voucher</p>
   
  ```
- curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PRVEIOUS_STEP}c -s | jq
+ curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PRVEIOUS_STEP} -s | jq
  ```
  
   <b>2. Buy Voucher with mockSpeed="slow"(Voucher order processed time greater than 30s)</b>
@@ -217,7 +235,7 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
  <p>- Get Voucher: You will get an Processing message</p>
   
  ```
- curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PRVEIOUS_STEP}c -s | jq
+ curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PRVEIOUS_STEP} -s | jq
  ```
   
   <p>- Wait for 31 seconds and get Voucher Code in your phone</p>

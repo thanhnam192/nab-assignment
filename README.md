@@ -60,14 +60,23 @@
  
  <h3>--------------------------Work Flow--------------------------</h3>
  <h4>1. Buy Voucher</h4>
+ <p>- User/Client make a call to our API to buy an Voucher. Our system will create Voucher Order and <b>IMEDIATELY</b> send back to User with OrderID and message is Voucher order is processing</p>
+ <p>- System send Voucher Order to SQS and let Lambda buy an Voucher from 3rd party. After finish to buy Voucher, Lambda will send messge to Result Queue</p>
+ <p>- System will take a message from Result Queue and Update Voucher Order to DB. There are 3 cases:
+  <ul>
+    <li>Finish within 30 seconds: Just update Voucher result to DB</li>
+     <li>Finish but more than 30 seconds: Update Voucher result to DB. Send SMS to User</li>
+     <li>Error: Update Voucher result to DB. Send SMS to User</li>
+</ul>
+</p>
  <p>(Open image in new tab for easy to read)</p>
  
  ![](/imgForReadme/buyVoucherFlow.png)
  
   <h4>2. Get ALL Voucher Purchased</h4>
-  <p>That function need to be <b>Secured</b>. That why System will send Auth Code by SMS to user to verify that user is the owner of phone number</p>
-  <p>Auth Code will be <b>EXPIRED IN 60 seconds or Used by user</b></p>
-  <p>After received Auth Code on their phone, they can use that code to call our API to get all voucher that purchased by their phone</p>
+  <p>- That function need to be <b>Secured</b>. That why System will send Auth Code by SMS to user to verify that user is the owner of phone number</p>
+  <p>- Auth Code will be <b>EXPIRED IN 60 seconds or Used by user</b></p>
+  <p>- After received Auth Code on their phone, they can use that code to call our API to get all voucher that purchased by their phone</p>
   
  <p>For more detail, We can check the flow below (Open image in new tab for easy to read)</p>
  

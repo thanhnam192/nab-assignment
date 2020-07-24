@@ -71,13 +71,16 @@
   <li><b>/docker-compose.yml</b>: Our docker-compose file. Used to deploy our Microservice Lanscape to docker</li>
   </ul>
   <h3>--------------------------Let Run Our Application on Local-------------------------------</h3>
-  <h4>Do step by step below to run our application:</h4>
+  <h4>1. Deploy AWS Serverless</h4>
+  <p><b>It will take time. I deployed it for you</b>. If you want to deploy, follow a steps in file serverless/script-deploy.txt</p>
+  
+  <h4>2. Deploy our Microservice Lanscape on Docker. Do step by step as below to deploy our application:</h4>
   <ul>
   <li>1. Down load <b>demo_user_information.txt</b> file in attachment of Email(If can't find, contact me to get it via thanhnam192@gmail.com)</li>
   <li>2. Open docker-compose.yml file and update some params:
     <ul>
-      <li>AWS_ACCESS_KEY_ID=<b>AWS_ACCESS_KEY_ID in demo_user_information.txt</b></li>
-      <li>AWS_SECRET_ACCESS_KEY=<b>AWS_SECRET_ACCESS_KEY in demo_user_information.txt</b></li>
+      <li>AWS_ACCESS_KEY_ID=<b><AWS_ACCESS_KEY_ID in demo_user_information.txt></b></li>
+      <li>AWS_SECRET_ACCESS_KEY=<b><AWS_SECRET_ACCESS_KEY in demo_user_information.txt></b></li>
     </ul>
   </li>
   <li>Open CMD at root of project folder</li>
@@ -88,4 +91,8 @@
 </ul>
 
 ![](/imgForReadme/health.png)
+
+ <h3>--------------------------Let Test Our Application-------------------------------</h3>
+ 
+
   

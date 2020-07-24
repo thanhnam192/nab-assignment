@@ -1,2 +1,2 @@
 # NAB - Assignment statement 2
-nab-assignment
+![](imgForReadme/SystemArchitect.jpg)

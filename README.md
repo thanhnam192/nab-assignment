@@ -215,7 +215,7 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
 ![](/imgForReadme/health.png)
 
 <ul>
-  <li>8. Install jq to your sytem:
+  <li>8. Install jq to your system:
     <ul>
       <li>Run command: sudo apt-get update </li>
       <li>Run command: sudo apt-get install jq </li>
@@ -282,6 +282,6 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
 curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/verification/sms --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\"}" -s | jq
 ```
 
-<p>- You will received Auth SMS Code. You can check our code in our DB (phone_verification table)</p>
-<p>- Wait for 60 seconds. Check your code in DB, auth code will be removed</p>
+<p>- You will received Auth SMS Code. You can check your code in DB (phone_verification table)</p>
+<p>- Wait for 60 seconds. Check your code in DB, auth code will be removed. You can't use that Auth Code anymore</p>
 

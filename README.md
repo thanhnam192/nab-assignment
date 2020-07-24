@@ -143,25 +143,25 @@
   
   <h4>2. Deploy our Microservice Lanscape on Docker. Do step by step as below to deploy our application:</h4>
   <ul>
-  <li>1. Down load <b>demo_user_information.txt</b> file in attachment of Email(If can't find, contact me to get it via thanhnam192@gmail.com)</li>
+  <li>1. Download <b>demo_user_information.txt</b> file in attachment of Email(If can't find, contact me to get it via thanhnam192@gmail.com)</li>
   <li>2. Open docker-compose.yml file and update some params:
     <ul>
-      <li>AWS_ACCESS_KEY_ID=<b><AWS_ACCESS_KEY_ID in demo_user_information.txt></b></li>
-      <li>AWS_SECRET_ACCESS_KEY=<b><AWS_SECRET_ACCESS_KEY in demo_user_information.txt></b></li>
+      <li>AWS_ACCESS_KEY_ID=<b>AWS_ACCESS_KEY_ID in demo_user_information.txt</b></li>
+      <li>AWS_SECRET_ACCESS_KEY=<b>AWS_SECRET_ACCESS_KEY in demo_user_information.txt</b></li>
     </ul>
   </li>
-  <li>Open CMD at root of project folder</li>
-  <li>Run command: ./gradlew build</li>
-  <li>Run command: docker-compose build</li>
-  <li>Run command: docker-compose up -d</li>
-  <li>Waiting and Checking our application ALL UP via: http://localhost:8080/actuator/health</li>
+  <li>3. Open CMD at root of project folder</li>
+  <li>4. Run command: ./gradlew build</li>
+  <li>5. Run command: docker-compose build</li>
+  <li>6. Run command: docker-compose up -d</li>
+  <li>7. Waiting and Checking our application ALL UP via: http://localhost:8080/actuator/health</li>
 
 </ul>
 
 ![](/imgForReadme/health.png)
 
 <ul>
-  <li>Install jq to your sytem:
+  <li>8. Install jq to your sytem:
     <ul>
       <li>Run command: sudo apt-get update </li>
       <li>Run command: sudo apt-get install jq </li>
@@ -170,7 +170,7 @@
 </ul>
 
  <h3>--------------------------Let Test Our Application-------------------------------</h3>
- <p><b>Note</b>: Change <YOUR_PHONE_NUMBER>, <YOUR_CODE> to your phone, code before run a cURL</p>
+ <p><b>Note</b>: Change YOUR_PHONE_NUMBER, YOUR_CODE to your phone, code before run a cURL</p>
  
  <b>1. Buy Voucher with mockSpeed="fast"(Voucher order processed time less than 30s)</b>
   <p>- Buy Voucher</p>

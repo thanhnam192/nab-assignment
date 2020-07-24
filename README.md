@@ -155,14 +155,54 @@
   <li>Run command: docker-compose build</li>
   <li>Run command: docker-compose up -d</li>
   <li>Waiting and Checking our application ALL UP via: http://localhost:8080/actuator/health</li>
+
 </ul>
 
 ![](/imgForReadme/health.png)
 
- <h3>--------------------------Let Test Our Application-------------------------------</h3>
- <b>1. Buy Voucher with normal speed(Voucher order processed time less than 30s)
-  ```
-  ```
-  
+<ul>
+  <li>Install jq to your sytem:
+    <ul>
+      <li>Run command: sudo apt-get update </li>
+      <li>Run command: sudo apt-get install jq </li>
+      </ul>
+  </li>
+</ul>
 
+ <h3>--------------------------Let Test Our Application-------------------------------</h3>
+ 
+ <b>1. Buy Voucher with mockSpeed="fast"(Voucher order processed time less than 30s)</b>
+  <p>- Buy Voucher</p>
+
+```
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/voucher/buy --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\",\"mobileNetwork\" : \"Viettel\",\"price\" : 555,\"mockSpeed\": \"fast\"}" -s | jq
+```
   
+ <p>- Get Voucher</p>
+  
+ ```
+ curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PRVEIOUS_STEP}c -s | jq
+ ```
+ 
+  <b>2. Buy Voucher with mockSpeed="slow"(Voucher order processed time greater than 30s)</b>
+  <p>- Buy Voucher</p>
+  
+```
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/voucher/buy --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\",\"mobileNetwork\" : \"Viettel\",\"price\" : 555,\"mockSpeed\": \"slow\"}" -s | jq
+```
+
+ <p>- Get Voucher: You will get an Processing message</p>
+  
+ ```
+ curl -X GET http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID_FROM_PRVEIOUS_STEP}c -s | jq
+ ```
+  
+  <p>- Wait for 31 seconds and get Voucher Code in your phone</p>
+  
+ <b>3. Buy Voucher with mockSpeed="error"(Voucher order processed with ERROR)</b>
+ 
+```
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/voucher/buy --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\",\"mobileNetwork\" : \"Viettel\",\"price\" : 555,\"mockSpeed\": \"error\"}" -s | jq
+```
+
+<p>System will send SMS error message to your phone</p>

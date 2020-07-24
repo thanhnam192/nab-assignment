@@ -70,3 +70,25 @@
   <li><b>/serverless</b>: Our AWS Serverless functions</li>
   <li><b>/docker-compose.yml</b>: Our docker-compose file. Used to deploy our Microservice Lanscape to docker</li>
   </ul>
+  <h3>--------------------------Let Run Our Application on Local-------------------------------</h3>
+  <h4>Do step by step below to run our application:</h4>
+  <ul>
+  <li>1. Down load <b>demo_user_information.txt</b> file in attachment of Email(If can't find, contact me to get it via thanhnam192@gmail.com)</li>
+  <li>2. Open docker-compose.yml file and update some params:
+    <ul>
+      <li>AWS_ACCESS_KEY_ID=<b>AWS_ACCESS_KEY_ID in demo_user_information.txt</b></li>
+      <li>AWS_SECRET_ACCESS_KEY=<b>AWS_SECRET_ACCESS_KEY in demo_user_information.txt</b></li>
+    </ul>
+  </li>
+  <li>Open CMD at root of project folder</li>
+  <li>Run command: ./gradlew build</li>
+  <li>Run command: docker-compose build</li>
+  <li>Run command: docker-compose up -d</li>
+  <li>
+    <p>Waiting and Checking our application ALL UP via: http://localhost:8080/actuator/health</p>
+    <p>
+     ![](/imgForReadme/health.png)
+    </p>
+  </li>
+</ul>
+  

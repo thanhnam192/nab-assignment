@@ -60,7 +60,7 @@
  
  <h3>--------------------------Work Flow--------------------------</h3>
  <h4>1. Buy Voucher</h4>
- <p>- User/Client make a call to our API to buy an Voucher. Our system will create Voucher Order and <b>IMEDIATELY</b> send back to User with OrderID and message is Voucher order is processing</p>
+ <p>- User/Client make a call to our API to buy an Voucher. Our system will create Voucher Order and <b>IMEDIATELY</b> send back to User with OrderID and message is "Voucher order request is being processed within 30 seconds". User can use OrderID to make a call to check a process of their Voucher Order</p>
  <p>- System send Voucher Order to SQS and let Lambda buy an Voucher from 3rd party. After finish to buy Voucher, Lambda will send messge to Result Queue</p>
  <p>- System will take a message from Result Queue and Update Voucher Order to DB. There are 3 cases:
   <ul>
@@ -69,7 +69,7 @@
      <li>Error: Update Voucher result to DB. Send SMS to User</li>
 </ul>
 </p>
- <p>(Open image in new tab for easy to read)</p>
+ <p>For more detail, We can check the flow below (Open image in new tab for easy to read)</p>
  
  ![](/imgForReadme/buyVoucherFlow.png)
  

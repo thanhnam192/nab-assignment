@@ -170,6 +170,7 @@
 </ul>
 
  <h3>--------------------------Let Test Our Application-------------------------------</h3>
+ <p><b>Note</b>: Change <YOUR_PHONE_NUMBER>, <YOUR_CODE> to your phone, code before run a cURL</p>
  
  <b>1. Buy Voucher with mockSpeed="fast"(Voucher order processed time less than 30s)</b>
   <p>- Buy Voucher</p>

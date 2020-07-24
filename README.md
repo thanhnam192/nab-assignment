@@ -52,7 +52,7 @@
   </li>
  </ul>
  
- <h2>Work Flow</h2>
+ <h3>--------------------------Work Flow--------------------------</h3>
  <h4>Buy Voucher</h4>
  <p>(Open image in new tab for easy to read)</p>
  
@@ -70,6 +70,73 @@
   <li><b>/serverless</b>: Our AWS Serverless functions</li>
   <li><b>/docker-compose.yml</b>: Our docker-compose file. Used to deploy our Microservice Lanscape to docker</li>
   </ul>
+  <h3>--------------------------API Description--------------------------</h3>
+  <b>1. Buy Voucher</b>
+  <ul>
+  <li>Url: http://localhost:8080/api/phone/voucher/buy </li>
+  <li>Method: POST</li>
+  <li>Request Body:
+<p>
+{
+    "phoneNumber" : "+84986329076",
+    "mobileNetwork" : "Viettel",
+    "price" : 555,
+    "mockSpeed": "fast"
+  }</p>
+    <ul>
+      <li>phoneNumber: Your phone number with <b>E.164 formatting</b>. example: +84986329076</li>
+      <li>mobileNetwork: Your mobile network that you want to your voucher related to</li>
+      <li>price: price of voucher</li>
+      <li><b>mockSpeed</b>: Used to mock our process. Values are:
+        <ul>
+          <li>fast : process voucher with NORMAL/FAST speed. Return voucher in less than 30 seconds</li>
+           <li>slow : process voucher with SLOW speed. Return voucher in MORE than 31 seconds</li>
+           <li>error : process voucher with ERROR</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  </ul>
+  <b>2. Get Voucher by OrderId</b>
+  <ul>
+   <li>Url: http://localhost:8080/api/phone/voucher/{YOUR_ORDER_ID} </li>
+  <li>Method: GET</li>
+  <li>Request Body: none</li>
+  </ul>
+  
+   <b>3. Send Auth Code by SMS</b>
+  <ul>
+   <li>Url: http://localhost:8080/api/phone/verification/sms </li>
+  <li>Method: POST</li>
+  <li>Request Body: 
+    <p>{
+    "phoneNumber" : "+84986329076"
+}</p>
+    <ul>
+      <li>phoneNumber: Your phone number with <b>E.164 formatting</b>. example: +84986329076</li>
+    </ul>
+    
+  </li>
+  </ul>
+  
+  <b>4. Get all Voucher that you purchased</b>
+    <ul>
+  <li>Url: http://localhost:8080/api/phone/voucher/all </li>
+  <li>Method: POST</li>
+  <li>Request Body:
+<p>
+{
+    "phoneNumber" : "+84986329076",
+    "code" : "ABCDEF"
+}</p>
+    <ul>
+      <li>phoneNumber: Your phone number with <b>E.164 formatting</b>. example: +84986329076</li>
+      <li>code: Auth Code that received in your phone</li>
+    </ul>
+  </li>
+  </ul>
+  
+  
   <h3>--------------------------Let Run Our Application on Local-------------------------------</h3>
   <h4>1. Deploy AWS Serverless</h4>
   <p><b>It will take time. I deployed it for you</b>. If you want to deploy, follow a steps in file serverless/script-deploy.txt</p>
@@ -93,6 +160,9 @@
 ![](/imgForReadme/health.png)
 
  <h3>--------------------------Let Test Our Application-------------------------------</h3>
- 
+ <b>1. Buy Voucher with normal speed(Voucher order processed time less than 30s)
+  ```
+  ```
+  
 
   

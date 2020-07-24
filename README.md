@@ -138,23 +138,35 @@
   
   
   <h3>--------------------------Let Run Our Application on Local-------------------------------</h3>
+  <p><b>IMPORTANCE</b>: Download <i><b>demo_user_information.txt</b></i> file in attachment of Email that I sent you(If can't find, contact me to get it via thanhnam192@gmail.com)</p>
+  
   <h4>1. Deploy AWS Serverless</h4>
-  <p><b>It will take time. I deployed it for you</b>. If you want to deploy, follow a steps in file serverless/script-deploy.txt</p>
+  <p><b>ALREADY DEPLOYED</b>. If you want to know how to deploy, follow a steps below</p>
+  <ul>
+  <li>1. Install AWS CLI</li>
+  <li>2. Install AWS SAM CLI</li>
+  <li>3. Open cmd, run <b>aws configure</b> and update credential same with credential in demo_user_information.txt</li>
+  <li>4. Open file Serverless/template.yaml and update TWILIO_ACCOUNT_SID, TWILIO_ACCOUNT_AUTH, TWILIO_PHONE_NUMBER with values same as demo_user_information.txt</li>
+  <li>5. Open cmd at Serverless folder</li>
+  <li>6. Run: npm install</li>
+  <li>7. Run: npm run build</li>
+  <li>8. Run: sam package --s3-bucket demo.build.nab --output-template-file demo-template.yaml --region ap-southeast-2</li>
+  <li>9. Run: sam deploy --template-file <b>PATH_TO_FILE</b>\demo-template.yaml  --stack-name demo-nab --capabilities CAPABILITY_IAM --region ap-southeast-2</li>
+  </ul>
   
   <h4>2. Deploy our Microservice Lanscape on Docker. Do step by step as below to deploy our application:</h4>
   <ul>
-  <li>1. Download <b>demo_user_information.txt</b> file in attachment of Email(If can't find, contact me to get it via thanhnam192@gmail.com)</li>
-  <li>2. Open docker-compose.yml file and update some params:
+  <li>1. Open docker-compose.yml file and update some params:
     <ul>
       <li>AWS_ACCESS_KEY_ID=<b>AWS_ACCESS_KEY_ID in demo_user_information.txt</b></li>
       <li>AWS_SECRET_ACCESS_KEY=<b>AWS_SECRET_ACCESS_KEY in demo_user_information.txt</b></li>
     </ul>
   </li>
-  <li>3. Open CMD at root of project folder</li>
-  <li>4. Run command: ./gradlew build</li>
-  <li>5. Run command: docker-compose build</li>
-  <li>6. Run command: docker-compose up -d</li>
-  <li>7. Waiting and Checking our application ALL UP via: http://localhost:8080/actuator/health</li>
+  <li>2. Open CMD at root of project folder</li>
+  <li>3. Run command: ./gradlew build</li>
+  <li>4. Run command: docker-compose build</li>
+  <li>5. Run command: docker-compose up -d</li>
+  <li>6. Waiting and Checking our application ALL UP via: http://localhost:8080/actuator/health</li>
 
 </ul>
 
@@ -220,3 +232,14 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
 ```
 curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/voucher/all --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\", \"code\" : \"<YOUR_CODE>\"}" -s | jq
 ```
+
+<b>5. Auth Timer Expired and Auth Code will be removed</b>
+<p>- Send Auth Code via SMS</p>
+
+```
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/verification/sms --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\"}" -s | jq
+```
+
+<p>- You will received Auth SMS Code. You can check our code in our DB (phone_verification table)</p>
+<p>- Wait for 60 seconds. Check your code in DB, auth code will be removed</p>
+

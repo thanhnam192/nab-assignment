@@ -62,3 +62,11 @@
  <p>(Open image in new tab for easy to read)</p>
  
   ![](/imgForReadme/getAllVoucherFlow.png)
+  
+  <h3>File&Folder Structure</h3>
+  <ul>
+  <li><b>/microservices</b>: Our microservices placed there. Included ProductService, PhoneService</li>
+  <li><b>/spring-cloud</b>: Everything related to SpringCloud. For now, we only have Netflix Eureka as a discovery service(eureka-server)</li>
+  <li><b>/serverless</b>: Our AWS Serverless functions</li>
+  <li><b>/docker-compose.yml</b>: Our docker-compose file. Used to deploy our Microservice Lanscape to docker</li>
+  </ul>

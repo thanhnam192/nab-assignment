@@ -84,11 +84,8 @@
   <li>Run command: ./gradlew build</li>
   <li>Run command: docker-compose build</li>
   <li>Run command: docker-compose up -d</li>
-  <li>
-    <p>Waiting and Checking our application ALL UP via: http://localhost:8080/actuator/health</p>
-    <p>
-     ![](/imgForReadme/health.png)
-    </p>
-  </li>
+  <li>Waiting and Checking our application ALL UP via: http://localhost:8080/actuator/health</li>
 </ul>
+
+![](/imgForReadme/health.png)
   

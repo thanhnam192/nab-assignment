@@ -91,14 +91,18 @@ public class VoucherLogic {
 
         long periodTimeInSecond = TimeUtil.differenceInSecondWithCurrentTime(voucher.getTimestamp());
         if( voucher.getStatus() == VoucherOrderStatus.finish && periodTimeInSecond > MAX_WAIT_TIME ) {
-            sendVoucherCodeSMS(voucher);
+            String message = "Your Voucher Code: " + voucher.getVoucherCode();
+            sendSMS(voucher.getPhoneNumber(), message);
+        } else if ( voucher.getStatus() == VoucherOrderStatus.error ) {
+            String message = "Your Voucher Order is failed. Please contact supporter via: +84986329076";
+            sendSMS(voucher.getPhoneNumber(), message);
         }
     }
 
-    private void sendVoucherCodeSMS(Voucher voucher) throws IOException {
+    private void sendSMS(String phoneNumber, String message) throws IOException {
         SmsSQSDto smsSQSDto = new SmsSQSDto();
-        smsSQSDto.setMessage("Your Voucher Code: " + voucher.getVoucherCode());
-        smsSQSDto.setPhoneNumber(voucher.getPhoneNumber());
+        smsSQSDto.setMessage(message);
+        smsSQSDto.setPhoneNumber(phoneNumber);
         this.smsCreationNotification.notificationRequest(smsSQSDto);
     }
 

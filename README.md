@@ -12,7 +12,7 @@
 
 ![](/imgForReadme/SystemArchitect.png)
 
-<h3>Microserives Lanscape</h3>
+<h3>Microserives Landscape</h3>
 <ul>
   <li>Product Service: Stand as our Load Balancer. Proxy all requests to the microservices, using their application name.</li>
   <li>Phone Service: Our core service, handle some function such as Purchase Voucher, Get Vourcher information, SMS verification </li>
@@ -52,14 +52,24 @@
   </li>
  </ul>
  
+ <h3>MySQL Database</h3>
+ <ul>
+  <li><b>voucher</b> table: Stored all voucher of users</li>
+  <li><b>phone_verification</b> table: Used to Auth user by Auth Code SMS</li>
+</ul>
+ 
  <h3>--------------------------Work Flow--------------------------</h3>
- <h4>Buy Voucher</h4>
+ <h4>1. Buy Voucher</h4>
  <p>(Open image in new tab for easy to read)</p>
  
  ![](/imgForReadme/buyVoucherFlow.png)
  
-  <h4>Get ALL Voucher Purchased</h4>
- <p>(Open image in new tab for easy to read)</p>
+  <h4>2. Get ALL Voucher Purchased</h4>
+  <p>That function need to be <b>Secured</b>. That why System will send Auth Code by SMS to user to verify that user is the owner of phone number</p>
+  <p>Auth Code will be <b>EXPIRED IN 60 seconds or Used by user</b></p>
+  <p>After received Auth Code on their phone, they can use that code to call our API to get all voucher that purchased by their phone</p>
+  
+ <p>For more detail, We can check the flow below (Open image in new tab for easy to read)</p>
  
   ![](/imgForReadme/getAllVoucherFlow.png)
   
@@ -68,7 +78,7 @@
   <li><b>/microservices</b>: Our microservices placed there. Included ProductService, PhoneService</li>
   <li><b>/spring-cloud</b>: Everything related to SpringCloud. For now, we only have Netflix Eureka as a discovery service(eureka-server)</li>
   <li><b>/serverless</b>: Our AWS Serverless functions</li>
-  <li><b>/docker-compose.yml</b>: Our docker-compose file. Used to deploy our Microservice Lanscape to docker</li>
+  <li><b>/docker-compose.yml</b>: Our docker-compose file. Used to deploy our Microservice Landscape to docker</li>
   </ul>
   <h3>--------------------------API Description--------------------------</h3>
   <b>1. Buy Voucher</b>
@@ -154,7 +164,7 @@
   <li>9. Run: sam deploy --template-file <b>PATH_TO_FILE</b>\demo-template.yaml  --stack-name demo-nab --capabilities CAPABILITY_IAM --region ap-southeast-2</li>
   </ul>
   
-  <h4>2. Deploy our Microservice Lanscape on Docker. Do step by step as below to deploy our application:</h4>
+  <h4>2. Deploy our Microservice Landscape on Docker. Do step by step as below to deploy our application:</h4>
   <ul>
   <li>1. Open docker-compose.yml file and update some params:
     <ul>

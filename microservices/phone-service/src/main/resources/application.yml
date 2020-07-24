@@ -30,6 +30,10 @@ application:
     sms: ${env.name}_sms
     authTimer:  ${env.name}_timer
     authTimerExpired:  ${env.name}_timer_expired
+
+
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"
 ---
 spring.profiles: docker
 

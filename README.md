@@ -206,3 +206,16 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
 ```
 
 <p>System will send SMS error message to your phone</p>
+
+<b>4. Get all voucher that you purchased</b>
+<p>- Send Auth Code via SMS</p>
+
+```
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/verification/sms --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\"}" -s | jq
+```
+
+<p>- Take Auth Code in your phone and let get all voucher that you purchased</p>
+
+```
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone/voucher/all --data "{\"phoneNumber\" : \"<YOUR_PHONE_NUMBER>\", \"code\" : \"<YOUR_CODE>\"}" -s | jq
+```

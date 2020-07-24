@@ -9,6 +9,7 @@ import java.io.IOException;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthCodeTimerSQSDto {
     private String phoneNumber;
+    private String code;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -16,6 +17,14 @@ public class AuthCodeTimerSQSDto {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public static AuthCodeTimerSQSDto fromJSON(String json)

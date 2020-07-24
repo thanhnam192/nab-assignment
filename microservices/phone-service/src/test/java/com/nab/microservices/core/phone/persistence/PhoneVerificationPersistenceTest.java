@@ -51,6 +51,13 @@ public class PhoneVerificationPersistenceTest {
     }
 
     @Test
+    public void findByPhoneNumberAndCode() {
+        Optional<PhoneVerification> foundEntity = repository.findFirstByPhoneNumberAndCode(savedEntity.getPhoneNumber(), savedEntity.getCode());
+        assertTrue(foundEntity.isPresent());
+        assertEqualsPhoneVerification(savedEntity, foundEntity.get());
+    }
+
+    @Test
     public void updateAuthCode() {
         savedEntity.setCode("56789");
         repository.save(savedEntity);

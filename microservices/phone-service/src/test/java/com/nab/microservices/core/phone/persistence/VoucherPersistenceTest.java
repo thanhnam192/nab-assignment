@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -65,6 +66,24 @@ public class VoucherPersistenceTest {
         Optional<Voucher> foundEntity  = repository.findFirstByOrderId(savedEntity.getOrderId());
         assertTrue(foundEntity.isPresent());
         assertEquals("56789", foundEntity.get().getVoucherCode());
+    }
+
+    @Test
+    public void findAllByPhoneNumer() {
+        Voucher voucher = new Voucher();
+        voucher.setMobileNetwork(MOBILE_NETWORK);
+        voucher.setPhoneNumber(PHONE_NUMBER);
+        voucher.setPrice(PRICE);
+        voucher.setOrderId("test");
+        voucher.setStatus(ORDER_STATUS);
+        voucher.setVoucherCode(VOUCHER_CODE);
+        voucher.setTimestamp(TIMESTAMP);
+
+        repository.save(voucher);
+
+        Optional<List<Voucher>> foundEntity  = repository.findAllByPhoneNumber(PHONE_NUMBER);
+        assertTrue(foundEntity.isPresent());
+        assertEquals(2, foundEntity.get().size());
     }
 
     @Test(expected = DataIntegrityViolationException.class)

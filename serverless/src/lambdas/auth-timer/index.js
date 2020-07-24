@@ -27,9 +27,11 @@ exports.handler = async (event) => {
     // send message to AUTH_TIMER_EXPIRED_SQS
     console.log(`send message to AUTH_TIMER_EXPIRED_SQS_URL`);
     const params = {
-        MessageBody: JSON.stringify({phoneNumber : body.phoneNumber}),
+        MessageBody: JSON.stringify(body),
         QueueUrl: AUTH_TIMER_EXPIRED_SQS_URL
     };
+    console.log("---params-----");
+    console.log(JSON.stringify(params, null, 2));
     console.log("Send message to success queue");
     await  sqs.sendMessage(params).promise();
 

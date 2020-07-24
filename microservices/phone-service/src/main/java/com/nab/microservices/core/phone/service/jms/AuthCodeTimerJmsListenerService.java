@@ -25,8 +25,8 @@ public class AuthCodeTimerJmsListenerService {
         LOG.info("Received Order Result : " + responseJSON);
         try {
             AuthCodeTimerSQSDto authCodeTimerSQSDto = AuthCodeTimerSQSDto.fromJSON(responseJSON);
-            LOG.info("Aut Code expiered for " + authCodeTimerSQSDto.getPhoneNumber());
-            phoneVerificationLogic.resetAuthCode(authCodeTimerSQSDto.getPhoneNumber());
+            LOG.info("Auth Code expired for " + authCodeTimerSQSDto.getPhoneNumber());
+            phoneVerificationLogic.resetAuthCode(authCodeTimerSQSDto.getPhoneNumber(), authCodeTimerSQSDto.getCode());
         } catch (IOException ex) {
             LOG.error("Encountered error while parsing message.",ex);
             throw new JMSException("Encountered error while parsing message.");

@@ -34,7 +34,7 @@ public class PhoneVerificationLogic {
     }
 
     public void createSmsAuthCode(PhoneVerificationDto phoneVerificationDto) throws IOException {
-        String code = RandomStringUtils.randomAlphanumeric(6);
+        String code = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
 
         PhoneVerification phoneVerification;
 
@@ -60,7 +60,7 @@ public class PhoneVerificationLogic {
         phoneVerificationRepository.save(phoneVerification);
 
         sendSmsCode(phoneVerification.getCode(), phoneVerification.getPhoneNumber());
-        createAuthCodeTimer(phoneVerification.getPhoneNumber());
+        createAuthCodeTimer(phoneVerification.getPhoneNumber(), phoneVerification.getCode());
     }
 
     private void sendSmsCode(String code, String phoneNumber) throws IOException {
@@ -72,15 +72,16 @@ public class PhoneVerificationLogic {
         smsCreationNotification.notificationRequest(sms);
     }
 
-    private void createAuthCodeTimer(String phoneNumber) throws IOException {
+    private void createAuthCodeTimer(String phoneNumber, String code) throws IOException {
         AuthCodeTimerSQSDto authCodeTimerSQSDto = new AuthCodeTimerSQSDto();
         authCodeTimerSQSDto.setPhoneNumber(phoneNumber);
+        authCodeTimerSQSDto.setCode(code);
         authTimerCreationNotification.notificationRequest(authCodeTimerSQSDto);
 
     }
 
-    public void resetAuthCode(String phoneNumber) {
-        Optional<PhoneVerification> phoneVerificationOptional = phoneVerificationRepository.findFirstByPhoneNumber(phoneNumber);
+    public void resetAuthCode(String phoneNumber, String code) {
+        Optional<PhoneVerification> phoneVerificationOptional = phoneVerificationRepository.findFirstByPhoneNumberAndCode(phoneNumber, code);
         if( !phoneVerificationOptional.isPresent() ) return;
 
         PhoneVerification phoneVerification = phoneVerificationOptional.get();

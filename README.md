@@ -208,7 +208,7 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
   <li>3. Run command: ./gradlew build</li>
   <li>4. Run command: docker-compose build</li>
   <li>5. Run command: docker-compose up -d</li>
-  <li>6. Waiting and Checking our application ALL UP via: http://localhost:8080/actuator/health</li>
+  <li>6. Waiting(around 5 minutes) and Checking our application ALL UP via: http://localhost:8080/actuator/health</li>
 
 </ul>
 

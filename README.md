@@ -176,7 +176,11 @@ curl -H "Content-Type: application/json" -X POST http://localhost:8080/api/phone
   <p><b>Note:</b> You can import my Postman Collection(nab-phone-voucher.postman_collection.json) to use</p>
   
   <h3>--------------------------Let Run Our Application on Local-------------------------------</h3>
-  <p><b>IMPORTANCE</b>: Download <i><b>demo_user_information.txt</b></i> file in attachment of Email that I sent you(If can't find, contact me to get it via thanhnam192@gmail.com)</p>
+  <p><b>IMPORTANCE</b>:</p>
+  <ul>
+    <li>Download <i><b>demo_user_information.txt</b></i> file in attachment of Email that I sent you(If can't find, contact me to get it via thanhnam192@gmail.com)</li>
+  <li>MUST have Docker on your machine</li>
+</ul>
   
   <h4>1. Deploy AWS Serverless</h4>
   <p><b>ALREADY DEPLOYED</b>. If you want to know how to deploy, follow a steps below</p>

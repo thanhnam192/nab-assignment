@@ -54,3 +54,6 @@
  
  <h2>Work Flow</h2>
  <h4>Buy Voucher</h4>
+ 
+ ![](/imgForReadme/buyVoucherFlow.png)
+ 

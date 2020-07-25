@@ -16,7 +16,7 @@
 <ul>
   <li>Product Service: Stand as our Load Balancer. Proxy all requests to the microservices, using their application name.</li>
   <li>Phone Service: Our core service, handle some function such as Purchase Voucher, Get Vourcher information, SMS verification </li>
-  <li>Eureka Server: Netflix Eureka implements client-side service discovery, meaning that the clients run software that talks to the discovery service, Netflix Eureka, to get information about the available microservice instances.</li>
+  <li>Discovery Server: Netflix Eureka implements client-side service discovery, meaning that the clients run software that talks to the discovery service, Netflix Eureka, to get information about the available microservice instances.</li>
  </ul>
  <h3>AWS Serverless</h3>
 <ul>

@@ -50,6 +50,8 @@
       <li>Phone Service listen that queue and reset Auth SMS Code when Timer expired</li>
     </ul>
   </li>
+  
+  <li>DEAD queue: Each queue has corresponding dead queue. Messages failed multiple times(5 times) will be moved to dead queue</li>
  </ul>
  
  <h3>MySQL Database(phone-db)</h3>

@@ -56,7 +56,7 @@
  
  <h3>MySQL Database(phone-db)</h3>
  <ul>
-  <li><b>voucher</b> table: Stored all voucher of users</li>
+  <li><b>voucher</b> table: Store all voucher information of users</li>
   <li><b>phone_verification</b> table: Store the Auth Code of user. Used to Auth user by sending SMS</li>
 </ul>
  

@@ -1,4 +1,4 @@
-# Spring Microservice-AWS Serverless Architecture for purchase prepaid data for a SIM card
+# Spring Microservice-AWS Serverless Architecture to purchase prepaid data for a SIM card
 <p>Based on requirement of Bank ABC, we need to build an backend webservice that handle an function to allow user purchase prepaid data for a SIM card by getting a voucher.</p>
 <p>The Backend must have some characteristics:</p>
 <ul>
